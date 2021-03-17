@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+    {% block stylesheets %}
+         {{ parent() }}
+
+        <!-- CUSTOM CSS -->
+        <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    {% endblock %}
+{% block body %}
+    <div class="main-content-wrapper row">
+    <div class="d-flex flex-column form-wrapper my-auto mx-auto col-10 lg-6 pl-0 pr-0">
+        <div class="d-flex mt-2 pl-3 pr-3 pt-3">
+            <div class="d-flex ml-2 pb-3 {% if is_mobile() == false %} yellow-bottom-border {% endif %} {% if is_mobile() == true %} mx-auto{% endif %}">
+                <img class="width-20px-icon my-auto" src=" {{ asset('images/icons/padlock.svg') }} " alt="padlock icon">
+                <h1 class="title-connection  ml-2 mb-0">Connexion</h1>
+            </div>
+            {% if is_mobile() == false %}
+                <div class="d-flex ml-3 pb-3 sign-up-link">
+                    <img class="width-20px-icon my-auto" src=" {{ asset('images/icons/login-black.svg') }} " alt="login icon">
+                    <div class="yellow-login-icon-hover  my-auto"></div>
+                    <h1 class="title-connection-black mb-0 ml-2"><a class="links" href="{{ path('user_new') }}">Inscription</a></h1>
+                </div>
+            {% endif %}
+        </div>
+        <div class="separator-login-title"></div>
+
+    <form method="post" class="d-flex flex-column p-4">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <div class="form-group mt-2">
+            <label for="username">Email:</label>
+            <input class="form-control border-radius-10" type="text" id="username" name="email" value="{{ last_username }}" />
+        </div>
+
+        <div class="form-group mt-2">
+            <label for="password">Mot de passe:</label>
+            <input class="form-control border-radius-10" type="password" id="password" name="password" />
+            <a class="login-link text-right display-block-override mt-1" href="#">Mot de passe oublié ?</a>
+        </div>
+        <button class ="btn btn-midnight-blue  mt-2" type="submit">Connexion</button>
+        <div class="form-group">
+            {% if is_mobile() == true %}
+        <a class="signup-link text-right display-block-override mt-1" href="{{ path('user_new') }}">Pas de compte ? S'inscrire</a>
+            {% endif %}
+        </div>
+
+        {# input for a build-in protection against cross-site request forgery #}
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}">
+    </form>
+    </div>
+    </div>
+{% endblock %}

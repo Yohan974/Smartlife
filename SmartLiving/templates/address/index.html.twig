@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Address index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/account.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/address.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper mx-auto mt-5">
+        <section class="row mt-5  no-gutters  justify-content-center">
+            <div class="col-11 col-lg-12 no-gutters">
+                <h1 class="title-h1-midnight-blue">Mes adresses</h1>
+                <p class="title-h4-black text-left"><i class="left-yellow-arrow-icon"></i><a class="title-h4-black text-left back-account-link" href="{{ path('app_account') }}">Mon Compte</a>
+            </div>
+        </section>
+    </div>
+    <div class="row mt-5  no-gutters lavender-border-order justify-content-center">
+    {% for address in app.user.customer.addresses %}
+        <div class="col-lg-4 m-3 address-card card">
+            <div class="card-body">
+                <div class="d-flex pb-4 justify-content-between">
+                    <h4 class="card-title mb-0 align-self-start">{{ address.fullName }}</h4>
+                    {% if address.isDefault %}
+                        <img src=" {{ asset('images/icons/check-icon.svg')}} " alt="check icon">
+                    {% endif %}
+                </div>
+                <p>{{ address.address }}<br>{{ address.zipCode }}<br>{{ address.city }}<br>{{ address.country }}</p>
+                <a href="{{ path('address_edit', {'id': address.id}) }}" class="btn address-card-button w-100 mx-auto my-2">Modifier</a>
+                {{ include('address/_delete_form.html.twig') }}
+                {% if address.isDefault == false %}
+                    <a href="" class="btn address-card-button w-100 mx-auto my-2">Définir par défaut</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+    </div>
+    <div class="row m-5">
+        <a class="col-lg-3 btn lavender-add-button mx-auto" href="{{ path('address_new') }}">Ajouter une adresse</a>
+    </div>
+
+{% endblock %}

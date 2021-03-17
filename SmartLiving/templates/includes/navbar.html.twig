@@ -1,0 +1,77 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand my-auto" href="{{ path("product_index") }}">
+            <picture>
+                <source 
+                    srcset="{{ asset('images/icons/logo-desktop.svg') }}"
+                    media="(min-width: 992px)"
+                    class="logo-mobile"
+                    alt="logo"
+                >
+                <img 
+                    src="{{ asset('images/icons/logo-mobile.svg') }}"
+                    alt="logo"
+                    class="logo-desktop"
+                />
+            </picture>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="row-lg collapse navbar-collapse" id="navbarTogglerDemo02">
+                <div class="input-group input-group-sm col-lg-5">
+                    <div class="input-group-prepend">
+                        <button class="btn input-group-text" type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                    <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                </div>
+                {#  <input class="form-control mr-sm-2" type="search" placeholder="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                }#}
+            <ul class="navbar-nav mx-auto align-items-center mt-2 mt-lg-0">
+                {% set route_name = app.request.attributes.get('_route') %}
+                <li class="nav-item" >
+                    <a class="nav-link {% if route_name == 'product_index' %} active {% endif %}" href="{{ path('app_index') }}" > Accueil <span class="sr-only">(current)</span></a>
+                </li>
+
+                <!-- DROPDOWN -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link {% if route_name == 'category_show' %} active {% endif %} dropdown-toggle" href="#" data-toggle="dropdown">  Catégories </a>
+                    {{ render(path('category_index')) }}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Nous Contacter</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Nous Connaître</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav align-items-center mt-2 mt-lg-0 ml-auto" >
+
+                {% if is_granted('ROLE_USER') %}
+                {#user account drop down#}
+                <li class="nav-item dropdown">
+                    <a class="nav-link my-auto login-menu dropdown-toggle" href="#" data-toggle="dropdown"> <img src=" {{ asset('images/icons/login-yellow.svg')}} " alt="login"> </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a class="dropdown-item" href="{{ path('app_account') }}"> Mon compte </a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_orders') }}"> Mes commandes </a></li>
+                        <li><a class="dropdown-item" href=" {{ path('app_logout') }}"> Se déconnecter </a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link pt-0 navbar-icon" href="{{ path('app_login') }}"> <img src=" {{ asset('images/icons/login-black.svg')}} " alt="login"> </a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link pt-0 navbar-icon" href="{{ path("cart_index") }}"> <img src=" {{ asset('images/icons/cart-black.svg')}} " alt="panier"> </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+</div>
+
+

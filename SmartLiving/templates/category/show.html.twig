@@ -1,0 +1,34 @@
+{% import "macro/product.html.twig" as productTemplate %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Category{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/account.css') }}">
+    {# Use CSS for macro#}
+    <link rel="stylesheet" type="text/css" href=" {{ asset('css/product/homepage.css')}} ">
+{% endblock %}
+
+{% block body %}
+<div class="content-wrapper mx-auto mt-5">
+    <section class="row mt-5  no-gutters  justify-content-center">
+        <div class="col-11 col-lg-12 no-gutters">
+            <h1 class="title-h1-midnight-blue">{{ category.name }}</h1>
+        </div>
+    </section>
+</div>
+<div class="row mt-5 category-products mx-auto no-gutters lavender-border-order justify-content-center">
+    {% if subCategories %}
+        {% for subCat in subCategories %}
+            {% for product in subCat.products %}
+                {{ productTemplate.card(product.id, product.getTitle, product.getPhoto, product.getCategory.name, product.getUnitPrice) }}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        {% for product in products %}
+            {{ productTemplate.card(product.id, product.getTitle, product.getPhoto, product.getCategory.name, product.getUnitPrice) }}
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% macro card(id, title, photo, categoryName, unitPrice) %}
+    <section class="product-card">
+        <a href="{{ path('product_show', {'id': id}) }}">
+            <img id="product-image-homepage" class="product-image mb-2" src="{{ asset(photo) }}" alt="Photo du produit : {{ title }}">
+        </a>
+        <div class="info-detail">
+            <p class="product-title ml-0">{{ title }}</p>
+            <div class="review-detail">
+                <img class="review-star" src="{{ asset('images/icons/star_ratings_full.svg')}}">
+                <img class="review-star" src="{{ asset('images/icons/star_ratings_full.svg')}}">
+                <img class="review-star" src="{{ asset('images/icons/star_ratings_full.svg')}}">
+                <img class="review-star" src="{{ asset('images/icons/star_ratings_full.svg')}}">
+                <img class="review-star" src="{{ asset('images/icons/star_ratings_full.svg')}}">
+            </div>
+        </div>
+
+        <div  class="info-detail">
+            <p class="product-category ">{{ categoryName }}</p>
+            <p class="text-right product-price mt-auto">{{ unitPrice }} € </p>
+        </div>
+        <form action="{{ path("cart_add") }}" method="POST">
+            <input name="id" value={{id}} hidden>
+            <input name="quantity" value=1 hidden>
+            <button type="submit" class="btn btn-primary mt-2 w-100">Ajouter au panier <img src="{{ asset('images/icons/cart_icon.svg') }}" class="cart-icon"> </button>
+        </form>       
+    </section>
+{% endmacro %}
+
+{% macro miniCard( id, photo, title, unitPrice) %}
+    <div class="product-mini-card-wrapper">
+        <a href="{{ path('product_show', {'id': id}) }}">
+            <img class="product-mini-image" alt="Photo du produit : {{ title }}" src="{{ asset(photo) }}">
+        </a>
+        <div class="product-mini-info-wrapper">
+            <h4 class="product-mini-title">{{ title }}</h4>
+            <p class="product-mini-price">{{ unitPrice }} €</p>
+        </div>
+    </div>
+{% endmacro %}

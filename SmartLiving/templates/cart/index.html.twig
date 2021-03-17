@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href={{ asset('css/cart.css') }}>
+{% endblock %}
+
+{% block body %}
+    <div class="cart-main mx-auto">
+        <p class="cart-primary-text text-center">Mon Panier</p>
+        <div class="row cart-main-products">
+            <div class="col-lg col-12">
+            {% if items | length > 0 %}
+                {% for item in items %}
+                    <div class="row justify-content-center">
+                        <div class="col-auto">
+                            <img class="cart-image-product" src={{ asset(item.product.photo) }} alt="">
+                        </div>
+                        <div class="col-auto col-lg row">
+                            <div class="col-auto col-lg">
+                                <p class="cart-text">{{ item.product.title }}<p>
+                                {# Responsive mobile #}
+                                <form class="d-block d-lg-none form_quantity" action="{{ path("cart_update") }}" method ="POST" >
+                                    <input type="number" name="id" min=0 hidden value="{{ item.product.id }}">
+                                    <div class="form-row">
+                                        <div class="col-auto">
+                                            <label for="quantity_{{ item.product.id }}" class="cart-text form-label">Quantité</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input type="number" class="form-control cart-input-quantity text-center px-0" id="quantity_{{ item.product.id }}" name="quantity_{{ item.product.id }}" min=0 value="{{ item.quantity }}">
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="submit" class="btn btn-sm cart-button-update-quantity px-1"><img src="{{ asset('images/icons/update.svg') }}"></button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <p class="cart-price-product">{{ item.product.unitPrice }} €</p>
+                            </div>
+                            {# Responsive desktop #}
+                            <form class="d-lg-block d-none form_quantity col-auto" action="{{ path("cart_update") }}" method ="POST">
+                                <input type="number" name="id" min=0 hidden value="{{ item.product.id }}">
+                                <label for="quantity_{{ item.product.id }}" class="cart-text col-12 my-1 pl-0">Quantité</label>
+                                <input type="number" class="form-control cart-input-quantity text-center col-12 my-2 px-0" id="quantity_{{ item.product.id }}" name="quantity_{{ item.product.id }}" min=0 value="{{ item.quantity }}">
+                                <button type="submit" class="btn btn-sm cart-button-update-quantity text-center cart-send col-12 my-1">Mise a jour</button>
+                            </form>
+                        </div>
+                    </div>
+                    <hr class="cart-color-hr">
+                {% endfor %}
+            {% else %}
+                <p>Aucun produit</p>
+            {% endif %}
+        </div>
+        <div class="col-lg-auto col-12 order-lg-last order-first">
+            <div class="cart-frame-total text-center px-4 py-3">
+                <p class="cart-primary-text">Total HT: <span class="cart-sum-price ml-2">{{ sum }} €</span></p>
+                <a type="button" class="btn btn-lg cart-button-validate p-4 text-nowrap" href="{{ is_granted('ROLE_USER') ? path("cart_send") : path("app_login") }}">Valider le panier</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
